@@ -1,10 +1,29 @@
 <template>
-  <input type="text" class="input">
+  <input type="text" class="input" :class="{ 'green':isShow ,'red':!isShow}" @input='handinput'>
 </template>
 
 <script>
 export default {
-
+  props: ['msg', 'rules'],
+  data () {
+    return {
+      isShow: true
+    }
+  },
+  methods: {
+    handinput(event) {
+      let value = event.target.value;
+      //   console.log(value)
+      //   判断文本框底框的颜色
+      if (this.rules && this.rules.test(value)) {
+        this.isShow = true
+      } else {
+        this.isShow = false
+      }
+      //   将文本框的值传回父组件（子传父）
+      this.$emit('input', value)
+    }
+  }
 }
 </script>
 
