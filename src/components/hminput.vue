@@ -1,5 +1,6 @@
 <template>
-  <input type="text" class="input" :class="{ 'green':isShow ,'red':!isShow}" @input='handinput'>
+  <input type="text" class="input" :class="{ 'green':isShow ,'red':!isShow}" @input='handinput'
+  @blur='handblur'>
 </template>
 
 <script>
@@ -11,6 +12,7 @@ export default {
     }
   },
   methods: {
+    //   input事件，输入的值正确或者错误底部边框的颜色
     handinput(event) {
       let value = event.target.value;
       //   console.log(value)
@@ -22,6 +24,17 @@ export default {
       }
       //   将文本框的值传回父组件（子传父）
       this.$emit('input', value)
+    },
+    // 文本框失去焦点是，如果输入错误的轻微提示框
+    handblur() {
+      let value = event.target.value
+      if (this.rules && !this.rules.test(value)) {
+        // console.log(this.msg || '输入不正确')
+        this.$toast.fail({
+          message: this.msg || '输入不正确',
+          duration: 3000
+        })
+      }
     }
   }
 }

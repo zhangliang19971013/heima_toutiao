@@ -11,7 +11,7 @@
         <!-- 封装的文本框 -->
         <!-- 用户名框 -->
         <hminput placeholder="请输入手机号/用户名"
-         msg='输入的姓名不合法'
+         msg='输入的用户名不存在'
         :rules='/^(\d{5,6})$|^(1\d{10})$/'
          @input='handerinput'
          :value='user.username'

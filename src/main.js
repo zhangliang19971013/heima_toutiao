@@ -7,6 +7,12 @@ import '@/styles/reset.css'
 // 引入路由
 import router from '@/router/index'
 
+// 全局引入Vant框架(做轻微提示框) 按需引入
+import { Button, Toast } from 'vant'
+// Toast轻提示可以实现我们的需求(做轻微提示框)
+Vue.use(Button)
+  .use(Toast)// 链式编程
+
 Vue.config.productionTip = false
 
 new Vue({
