@@ -5,6 +5,8 @@ import VueRouter from 'vue-router'
 import Login from '@/view/login'
 // 引入个人中心页面
 import Personal from '../view/personal'
+// 引入个人信息编辑页面
+import EditPersonal from '../view/EditPersonal'
 Vue.use(VueRouter)
 
 // 路由对象配置
@@ -20,6 +22,11 @@ let router = new VueRouter({
       name: 'Personal',
       path: '/personal/:id',
       component: Personal
+    },
+    {
+      name: 'EditPersonal',
+      path: '/editPersonal/:id',
+      component: EditPersonal
     }
   ]
 })
