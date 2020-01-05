@@ -2,10 +2,10 @@
 // 引入配置好的基准路径
 import axios from '@/utils/myaxios'
 
-// 登录功能
+// 登录功能的api
 export const login = (data) => {
   return axios({
-    mathed: 'post',
+    method: 'post',
     url: '/login',
     data
   })
