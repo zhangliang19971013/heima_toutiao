@@ -62,7 +62,7 @@ export default {
         // 1.可以获取当前操作的返回结果
         // 2.await可以让后续的操作等待，只是执行完当前使用await标记的方法之后才会执行后续的操作
         let res = await login(this.user)
-        console.log(res)
+        // console.log(res)
         if (res.data.message === '用户不存在') {
           // 给出用户提示
           this.$toast.fail(res.data.message)

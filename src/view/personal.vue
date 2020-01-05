@@ -3,12 +3,12 @@
     <router-link to="/edit_profile">
       <div class="profile">
         <!-- $axios.defaults.baseURL读取axios的服务器路径 -->
-        <img src="http://img1.imgtn.bdimg.com/it/u=3757784226,1202878475&fm=26&gp=0.jpg" alt />
+        <img :src="userDate.head_img" alt="" />
         <div class="profile-center">
           <div class="name">
-            <span class="iconfont iconxingbienan"></span>我就是我
+            <span class="iconfont iconxingbienan"></span>{{userDate.nickname}}
           </div>
-          <div class="time">2019-9-24</div>
+          <div class="time">{{userDate.create_date}}</div>
         </div>
         <span class="iconfont iconjiantou1"></span>
       </div>
@@ -26,9 +26,30 @@
 import hmcell from '../components/hmcell'
 // 引入封装的按钮
 import hmbutton from '../components/hmbutton'
+// 引入获取用户详情的api
+import { getUserById } from '@/apis/user'
 export default {
   components: {
     hmcell, hmbutton
+  },
+  data () {
+    return {
+      // 设置一个当前用户登录对象
+      userDate: {
+
+      }
+    }
+  },
+  async mounted() {
+    let id = this.$route.params.id;
+    // 拿到路由id
+    // console.log(id)
+    let res = await getUserById(id)
+    if (res.data.message === '获取成功') {
+      this.userDate = res.data.data
+      this.userDate.head_img = 'http://127.0.0.1:3000' + this.userDate.head_img;
+      console.log(this.userDate)
+    }
   }
 }
 </script>
