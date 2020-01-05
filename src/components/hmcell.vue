@@ -3,13 +3,13 @@
       <!-- 左边内容 -->
 <div class="left">{{title}}</div>
 <!-- 右边内容 -->
-<div class="right">{{desc}} <span class="iconfont iconjiantou1"></span></div>
+<div class="right"> {{type==='password'?"******":desc}}    <span class="iconfont iconjiantou1"></span></div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['title', 'desc']
+  props: ['title', 'desc', 'type']
 }
 </script>
 
