@@ -18,3 +18,12 @@ export const getUserById = (id) => {
     url: `user/${id}`
   })
 }
+
+// 3，更新个人信息
+export const updateUserById = (id, data) => {
+  return axios({
+    method: 'post',
+    url: `/user_update/${id}`,
+    data
+  })
+}

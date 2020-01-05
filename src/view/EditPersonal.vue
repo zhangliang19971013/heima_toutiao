@@ -9,7 +9,7 @@
     <div class="userimg">
       <img :src="userDate.head_img" alt />
       <!-- 文件上传引用 -->
-      <!-- <van-uploader :after-read="" /> -->
+      <van-uploader :after-read="afterRead" />
     </div>
     <!-- 下面修改详细信息部分 -->
     <hmcell title="昵称" :desc="userDate.nickname"></hmcell>
@@ -25,6 +25,10 @@ import hmheader from '../components/hmheader';
 import hmcell from '../components/hmcell';
 // 引入获取用户详情的方法
 import { getUserById } from '../apis/user';
+// 引入上传文件的方法
+import { uploadFile } from '@/apis/upload';
+// 引入更新信息的api
+import { updateUserById } from '@/apis/user';
 export default {
   components: {
     hmheader,
@@ -48,6 +52,30 @@ export default {
         //   如果没有图片就默认图片
         this.currentUser.head_img =
           'http://127.0.0.1:3000/uploads/images/default.png';
+      }
+    }
+  },
+  //   实现文件上传
+  methods: {
+    async afterRead(file) {
+      let formdata = new FormData();
+      formdata.append('file', file.file)
+      let res = await uploadFile(formdata)
+      //   console.log(res)
+      if (res.data.message === '文件上传成功') {
+        //  实现预览
+        this.userDate.head_img = 'http://127.0.1.1:3000' + res.data.data.url
+        let res2 = await updateUserById(this.userDate.id, {
+          head_img: res.data.data.url
+        })
+        // console.log(res2)
+        if (res2.data.message === '修改成功') {
+          this.$toast.success('文件修改成功');
+        } else {
+          this.$toast.fail('文件修改失败')
+        }
+      } else {
+        this.$toast.fail('文件上传失败');
       }
     }
   }
