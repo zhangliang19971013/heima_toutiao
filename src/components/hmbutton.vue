@@ -31,7 +31,7 @@ export default {
       text-align: center;
       line-height: 50px;
       border-radius: 25px;
-      background-color: red;
+      background-color: green;
       margin: 0 auto;
   }
 </style>

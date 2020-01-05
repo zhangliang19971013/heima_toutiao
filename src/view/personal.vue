@@ -13,11 +13,24 @@
         <span class="iconfont iconjiantou1"></span>
       </div>
     </router-link>
+     <hmcell title='我的关注' desc='关注的用户'></hmcell>
+    <hmcell title='我的跟帖' desc='跟帖/回复'></hmcell>
+    <hmcell title='我的收藏' desc='文章/视频'></hmcell>
+    <hmcell title='设置'></hmcell>
+    <hmbutton class="btn">退出</hmbutton>
   </div>
 </template>
 
 <script>
-export default {}
+// 引入封装的栏框
+import hmcell from '../components/hmcell'
+// 引入封装的按钮
+import hmbutton from '../components/hmbutton'
+export default {
+  components: {
+    hmcell, hmbutton
+  }
+}
 </script>
 
 <style lang='less' scoped>
@@ -58,5 +71,10 @@ a{
     font-size: 14px;
     margin-top: 5px;
   }
+}
+
+.btn {
+  margin: 20px auto;
+  background: red;
 }
 </style>
