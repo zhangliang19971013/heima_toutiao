@@ -24,7 +24,7 @@
       </div>
       <p class="tips">
         没有账号？
-        <a href="#/register" class>去注册</a>
+         <a href="#/register" class>去注册</a>
       </p>
       <!-- 封装的按钮 -->
       <hmbutton @click="handerclick">登录</hmbutton>

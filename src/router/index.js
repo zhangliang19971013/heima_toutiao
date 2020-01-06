@@ -9,6 +9,9 @@ import Personal from '../view/personal'
 import EditPersonal from '../view/EditPersonal'
 // 引入首页
 import Index from '../view/Index'
+// 引入注册页面
+import Register from '../view/register'
+
 Vue.use(VueRouter)
 
 // 路由对象配置
@@ -35,6 +38,11 @@ let router = new VueRouter({
       name: 'EditPersonal',
       path: '/editPersonal/:id',
       component: EditPersonal
+    },
+    {
+      name: 'Register',
+      path: '/register',
+      component: Register
     }
   ]
 })
