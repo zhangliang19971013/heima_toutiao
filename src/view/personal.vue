@@ -8,7 +8,7 @@
           <div class="name">
             <span class="iconfont iconxingbienan"></span>{{userDate.nickname}}
           </div>
-          <div class="time">{{userDate.create_date}}</div>
+          <div class="time">{{userDate.create_date | filters}}</div>
         </div>
         <span class="iconfont iconjiantou1"></span>
       </div>
@@ -28,6 +28,8 @@ import hmcell from '../components/hmcell'
 import hmbutton from '../components/hmbutton'
 // 引入获取用户详情的api
 import { getUserById } from '@/apis/user'
+// 引入封装的过滤器
+import { filters } from '../utils/myfilters'
 export default {
   components: {
     hmcell, hmbutton
@@ -56,6 +58,9 @@ export default {
       localStorage.removeItem('toutiao_41_token');
       this.$router.push({ name: 'Index' })
     }
+  },
+  filters: {
+    filters
   }
 }
 </script>
