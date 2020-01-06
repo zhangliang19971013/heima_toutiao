@@ -11,16 +11,35 @@
        <van-icon name="manager-o" />
      </div>
    </div>
+   <!-- Tab标签栏 -->
+   <!-- 通过v-model绑定当前激活标签对应的索引值，默认情况下启用第一个标签 -->
+<van-tabs v-model="active" sticky swipeable>
+    <!-- 单击标签项及内容面板 -->
+    <van-tab :title="value.name" v-for='value in cateList' :key='value.id'></van-tab>
+
+</van-tabs>
 
   </div>
 </template>
 
 <script>
+// 引入获取栏目列表的api
+import { getCateList } from '../apis/cate.js'
 export default {
   data () {
     return {
-      id: ''
+      id: '',
+      // 对应的默认展示框，展示头条页，登录索引为1，没登录索引为0
+      active: localStorage.getItem('toutiao_41_token') ? 1 : 0,
+      cateList: []
     }
+  },
+  //  引入调用
+  async mounted () {
+    this.id = JSON.parse(localStorage.getItem('toutiao_41_userInfo') || '{}').id;
+    let res = await getCateList()
+    // console.log(res)
+    this.cateList = res.data.data
   }
 }
 </script>
