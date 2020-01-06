@@ -14,15 +14,27 @@
     <!-- 下面修改详细信息部分 -->
     <hmcell title="昵称" :desc="userDate.nickname" @click="nickShow=!nickShow"></hmcell>
     <van-dialog v-model="nickShow" title="标题" show-cancel-button @confirm="updateNickname">
-      <van-field ref="nick" :value='userDate.nickname' placeholder="请输入昵称" required label="昵称" />
+      <van-field ref="nick" :value="userDate.nickname" placeholder="请输入昵称" required label="昵称" />
     </van-dialog>
-<!-- 密码编辑功能 -->
-    <hmcell title="密码" :desc="userDate.password" type="password" @click='passShow=!passShow'   ></hmcell>
-     <van-dialog v-model="passShow" title="修改密码" show-cancel-button @confirm="updatePassword"  :before-close="beforeClose">
+    <!-- 密码编辑功能 -->
+    <hmcell title="密码" :desc="userDate.password" type="password" @click="passShow=!passShow"></hmcell>
+    <van-dialog
+      v-model="passShow"
+      title="修改密码"
+      show-cancel-button
+      @confirm="updatePassword"
+      :before-close="beforeClose"
+    >
       <van-field ref="oldPass" placeholder="请输入原密码" required label="原密码" />
       <van-field ref="newPass" placeholder="请输入新密码" required label="新密码" />
     </van-dialog>
-    <hmcell title="性别" :desc="userDate.gender === 0 ? '女' : '男'"></hmcell>
+    <!-- 性别编辑功能 -->
+    <hmcell title="性别" :desc="userDate.gender === 0 ? '女' : '男'" @click="genderShow=!genderShow"></hmcell>
+    <!-- Vant弹出框 -->
+    <van-dialog v-model="genderShow" title="修改性别" show-cancel-button @confirm="updateGender">
+      <!-- 滑动选择栏 -->
+      <van-picker :columns="['女','男']" :default-index="userDate.gender"  @change="onChange" />
+    </van-dialog>
   </div>
 </template>
 
@@ -46,7 +58,8 @@ export default {
     return {
       userDate: {},
       nickShow: false,
-      passShow: false
+      passShow: false,
+      genderShow: false
     };
   },
   //   个人信息动态渲染
@@ -94,13 +107,13 @@ export default {
       let name = this.$refs.nick.$refs.input.value;
       // console.log(name)
       // 拿到服务器的值
-      let res = await updateUserById(this.userDate.id, { nickname: name })
+      let res = await updateUserById(this.userDate.id, { nickname: name });
       // console.log(res)
       if (res.data.message === '修改成功') {
-        this.userDate.nickname = name
-        this.$toast.success('修改成功')
+        this.userDate.nickname = name;
+        this.$toast.success('修改成功');
       } else {
-        this.$toast.fail('修改失败')
+        this.$toast.fail('修改失败');
       }
     },
     // 修改密码
@@ -108,17 +121,17 @@ export default {
       let oldPass = this.$refs.oldPass.$refs.input.value;
       // console.log(oldPass)
       if (this.userDate.password === oldPass) {
-        let newPass = this.$refs.newPass.$refs.input.value
+        let newPass = this.$refs.newPass.$refs.input.value;
         if (/^\S{3,16}$/.test(newPass)) {
           let res = await updateUserById(this.userDate.id, {
             password: newPass
-          })
+          });
           // console.log(res)
           if (res.data.message === '修改成功') {
-            this.userDate.password = newPass
-            this.$toast.success('密码修改成功')
+            this.userDate.password = newPass;
+            this.$toast.success('密码修改成功');
           } else {
-            this.$toast.fail('密码修改失败')
+            this.$toast.fail('密码修改失败');
           }
         }
       }
@@ -128,26 +141,41 @@ export default {
     beforeClose(action, done) {
       // 点击为确定 判断 密码的对错
       if (action === 'confirm') {
-        let oldPass = this.$refs.oldPass.$refs.input.value
-        let newPass = this.$refs.newPass.$refs.input.value
+        let oldPass = this.$refs.oldPass.$refs.input.value;
+        let newPass = this.$refs.newPass.$refs.input.value;
         // console.log(oldPass)
         // console.log(newPass)
         // 判断原密码是否正确
         if (oldPass !== this.userDate.password) {
-          this.$toast.fail('原密码输入不正确')
+          this.$toast.fail('原密码输入不正确');
           this.$refs.oldPass.$refs.input.select();
           this.$refs.oldPass.$refs.input.focus();
-          done(false)
+          done(false);
         } else if (!/^\S{3,16}$/.test(newPass)) {
-          this.$toast.fail('新密码输入不符合规范')
-          done(false)
+          this.$toast.fail('新密码输入不符合规范');
+          done(false);
         } else {
-          done()
+          done();
         }
       } else {
         // 点击取消就关闭弹框
-        done()
+        done();
       }
+    },
+    // 实现修改性别功能
+    async updateGender() {
+      // console.log(this.gender)
+      let res = await updateUserById(this.userDate.id, { gender: this.gender })
+      // console.log(res)
+      if (res.data.message === '修改成功') {
+        this.userDate.gender = this.gender
+        this.$toast.success('修改性别成功')
+      } else {
+        this.$toast.fail('修改性别失败')
+      }
+    },
+    onChange(picker, value, index) {
+      this.gender = index
     }
   }
 };
