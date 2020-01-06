@@ -7,11 +7,19 @@ import Login from '@/view/login'
 import Personal from '../view/personal'
 // 引入个人信息编辑页面
 import EditPersonal from '../view/EditPersonal'
+// 引入首页
+import Index from '../view/Index'
 Vue.use(VueRouter)
 
 // 路由对象配置
 let router = new VueRouter({
   routes: [
+    // 首页
+    {
+      name: 'Index',
+      path: '/',
+      component: Index
+    },
     //   登录页面
     {
       name: 'Login',

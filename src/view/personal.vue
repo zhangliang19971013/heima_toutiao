@@ -17,7 +17,7 @@
     <hmcell title='我的跟帖' desc='跟帖/回复'></hmcell>
     <hmcell title='我的收藏' desc='文章/视频'></hmcell>
     <hmcell title='设置'></hmcell>
-    <hmbutton class="btn">退出</hmbutton>
+    <hmbutton class="btn" @click='exit' >退出</hmbutton>
   </div>
 </template>
 
@@ -49,6 +49,12 @@ export default {
       this.userDate = res.data.data
       this.userDate.head_img = 'http://127.0.0.1:3000' + this.userDate.head_img;
       console.log(this.userDate)
+    }
+  },
+  methods: {
+    exit() {
+      localStorage.removeItem('toutiao_41_token');
+      this.$router.push({ name: 'Index' })
     }
   }
 }
