@@ -1,5 +1,5 @@
 <template>
-  <div class="cell">
+  <div class="cell" @click='editDade'>
       <!-- 左边内容 -->
 <div class="left">{{title}}</div>
 <!-- 右边内容 -->
@@ -9,8 +9,14 @@
 
 <script>
 export default {
-  props: ['title', 'desc', 'type']
+  props: ['title', 'desc', 'type'],
+  methods: {
+    editDade(event) {
+      this.$emit('click', event)
+    }
+  }
 }
+
 </script>
 
 <style lang='less' scoped>

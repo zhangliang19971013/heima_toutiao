@@ -12,7 +12,11 @@
       <van-uploader :after-read="afterRead" />
     </div>
     <!-- 下面修改详细信息部分 -->
-    <hmcell title="昵称" :desc="userDate.nickname"></hmcell>
+    <hmcell title="昵称" :desc="userDate.nickname" @click="nickShow=!nickShow"></hmcell>
+    <van-dialog v-model="nickShow" title="标题" show-cancel-button @confirm="updateNickname">
+      <van-field ref="nick" :value='userDate.nickname' placeholder="请输入昵称" required label="昵称" />
+    </van-dialog>
+
     <hmcell title="密码" :desc="userDate.password" type="password"></hmcell>
     <hmcell title="性别" :desc="userDate.gender === 0 ? '女' : '男'"></hmcell>
   </div>
@@ -36,7 +40,8 @@ export default {
   },
   data() {
     return {
-      userDate: {}
+      userDate: {},
+      nickShow: false
     };
   },
   //   个人信息动态渲染
@@ -55,27 +60,42 @@ export default {
       }
     }
   },
-  //   实现文件上传
   methods: {
+    //   实现图片文件上传
     async afterRead(file) {
       let formdata = new FormData();
-      formdata.append('file', file.file)
-      let res = await uploadFile(formdata)
+      formdata.append('file', file.file);
+      let res = await uploadFile(formdata);
       //   console.log(res)
       if (res.data.message === '文件上传成功') {
         //  实现预览
-        this.userDate.head_img = 'http://127.0.1.1:3000' + res.data.data.url
+        this.userDate.head_img = 'http://127.0.1.1:3000' + res.data.data.url;
         let res2 = await updateUserById(this.userDate.id, {
           head_img: res.data.data.url
-        })
+        });
         // console.log(res2)
         if (res2.data.message === '修改成功') {
           this.$toast.success('文件修改成功');
         } else {
-          this.$toast.fail('文件修改失败')
+          this.$toast.fail('文件修改失败');
         }
       } else {
         this.$toast.fail('文件上传失败');
+      }
+    },
+    // 修改用户名称
+    async updateNickname() {
+      // 拿到新输入的值
+      let name = this.$refs.nick.$refs.input.value;
+      // console.log(name)
+      // 拿到服务器的值
+      let res = await updateUserById(this.userDate.id, { nickname: name })
+      // console.log(res)
+      if (res.data.message === '修改成功') {
+        this.userDate.nickname = name
+        this.$toast.success('修改成功')
+      } else {
+        this.$toast.fail('修改失败')
       }
     }
   }
