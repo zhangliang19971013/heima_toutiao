@@ -6,7 +6,7 @@
         <img :src="userDate.head_img" alt="" />
         <div class="profile-center">
           <div class="name">
-            <span class="iconfont iconxingbienan"></span>{{userDate.nickname}}
+            <span class="iconfont iconxingbienv"></span>{{userDate.nickname}}
           </div>
           <div class="time">{{userDate.create_date | filters}}</div>
         </div>
@@ -94,7 +94,7 @@ a{
 
   .name {
     span {
-      color: #75b9eb;
+      color: pink;
     }
   }
 
