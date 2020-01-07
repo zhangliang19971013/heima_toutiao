@@ -11,6 +11,8 @@ import EditPersonal from '../view/EditPersonal'
 import Index from '../view/Index'
 // 引入注册页面
 import Register from '../view/register'
+// 引入搜素页面
+import Search from '../view/search'
 
 Vue.use(VueRouter)
 
@@ -43,6 +45,11 @@ let router = new VueRouter({
       name: 'Register',
       path: '/register',
       component: Register
+    },
+    {
+      name: 'Search',
+      path: '/search',
+      component: Search
     }
   ]
 })

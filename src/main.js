@@ -7,7 +7,7 @@ import '@/styles/reset.css'
 // 引入路由
 import router from '@/router/index'
 
-// 全局引入Vant框架(做轻微提示框) 按需引入
+// 全局引入Vant框架按需引入
 import { Button, Toast, Uploader, Dialog, Field, Picker, Icon, Tab, Tabs } from 'vant'
 // Toast轻提示可以实现我们的需求(做轻微提示框)
 

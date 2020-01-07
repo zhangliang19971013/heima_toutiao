@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- APP.vue为根目录 -->
     <!-- 组件展示区域 -->
     <router-view></router-view>
   </div>
