@@ -6,7 +6,7 @@
         <van-icon name="arrow-left back" @click="$router.back()" />
         <span class="iconfont iconnew new"></span>
       </div>
-      <span>关注</span>
+      <span :class="{active:article.has_follow}" @click="followThisUser">{{article.has_follow?'已关注':'关注'}}</span>
     </div>
     <!-- 文章部分 -->
     <div class="detail">
@@ -57,6 +57,10 @@
 import { getArticleById } from '../apis/article';
 // 引入封装的过滤器
 import { filters } from '../utils/myfilters';
+// 引入关注的api
+import { followUser } from '@/apis/user'
+// 引入取消关注的api
+import { unfollowUser } from '../apis/user'
 export default {
   data() {
     return {
@@ -75,6 +79,22 @@ export default {
   //   过滤器
   filters: {
     filters
+  },
+  methods: {
+    //  关注
+    async followThisUser() {
+      let res
+      // 满足下面的条件说明你已经关注过了，这次单击就是取消
+      if (this.article.has_follow) {
+        res = await unfollowUser(this.article.user.id)
+      } else { // 还没有关注，此次单击就是关注该用户
+        res = await followUser(this.article.user.id)
+      }
+      console.log(res)
+      // 刷新
+      this.article.has_follow = !this.article.has_follow
+      this.$toast.success(res.data.message)
+    }
   }
 };
 </script>
