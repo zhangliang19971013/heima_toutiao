@@ -9,3 +9,10 @@ export const getPostList = (params) => {
     params
   })
 }
+
+// 2,通过文章id,获取文章详情
+export const getArticleById = (id) => {
+  return axios({
+    url: `/post/${id}`
+  })
+}
