@@ -1,6 +1,6 @@
 <template>
   <!-- 加载图片 左右格式的 -->
-  <div class="single" v-if="post.type === 1 && post.cover.length <=2">
+  <div class="single" v-if="post.type === 1 && post.cover.length <=2" @click='handclick'>
     <div class="left">
       <p class="content">{{post.title}}</p>
       <p class="info">
@@ -11,7 +11,7 @@
     <img :src="post.cover[0].url" alt />
   </div>
   <!-- 加载视频数据 -->
-  <div class="singlev" v-else-if="post.type===2">
+  <div class="singlev" v-else-if="post.type===2" @click='handclick'>
     <p class="content">{{post.title}}</p>
     <div class="playarea">
       <img :src="post.cover[0].url" alt />
@@ -25,7 +25,7 @@
     </p>
   </div>
   <!-- 加载三张图片的格式 -->
-  <div class="singlet" v-else-if="post.type === 1 && post.cover.length >=3">
+  <div class="singlet" v-else-if="post.type === 1 && post.cover.length >=3" @click='handclick'>
     <p class="content">{{post.title}}</p>
     <div class="imgs">
       <!-- <img :src="post.cover[0].url" alt /> -->
@@ -41,7 +41,13 @@
 
 <script>
 export default {
-  props: ['post']
+  props: ['post'],
+  methods: {
+    // 增加新闻模块的点击事件（子传父亲）
+    handclick(event) {
+      this.$emit('click', event)
+    }
+  }
 };
 </script>
 

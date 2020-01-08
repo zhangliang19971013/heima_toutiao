@@ -13,6 +13,8 @@ import Index from '../view/Index'
 import Register from '../view/register'
 // 引入搜素页面
 import Search from '../view/search'
+// 引入新闻详情页面
+import ArticleDetail from '../view/ArticleDetail'
 
 Vue.use(VueRouter)
 
@@ -50,6 +52,11 @@ let router = new VueRouter({
       name: 'Search',
       path: '/search',
       component: Search
+    },
+    {
+      name: 'ArticleDetail',
+      path: '/articleDetail/:id',
+      component: ArticleDetail
     }
   ]
 })

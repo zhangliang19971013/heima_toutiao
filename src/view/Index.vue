@@ -28,7 +28,7 @@
         >
           <!-- 下拉刷新组件 -->
           <van-pull-refresh v-model="cate.isLoading" @refresh="onRefresh">
-            <hmarticleBlock v-for="item in cate.postList" :key="item.id" :post="item"></hmarticleBlock>
+            <hmarticleBlock v-for="item in cate.postList" :key="item.id" :post="item" @click='$router.push({path : `/articleDetail/${item.id}`})'></hmarticleBlock>
           </van-pull-refresh>
         </van-list>
       </van-tab>
@@ -76,6 +76,7 @@ export default {
     // console.log(res)
     this.cateList = res.data.data;
     // console.log(this.cateList)
+    // map原生方法实现数据改造
     this.cateList = this.cateList.map(value => {
       return {
         ...value,
@@ -88,7 +89,7 @@ export default {
       };
     });
     // map 向数组中的对象添加新的属性 生成一个新的数组
-    console.log(this.cateList);
+    // console.log(this.cateList);
     // 获取数据库数据成功
     this.init();
   },
