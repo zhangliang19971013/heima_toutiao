@@ -24,7 +24,7 @@
       poster:首帧画面-->
       <video :src="article.content" v-if="article.type===2" controls></video>
       <div class="opt">
-        <span class="like">
+        <span class="like" :class="{active:article.has_like}" @click="likeThisArticle">
           <van-icon name="good-job-o" />
           {{article.like_length}}
         </span>
@@ -61,6 +61,8 @@ import { filters } from '../utils/myfilters';
 import { followUser } from '@/apis/user'
 // 引入取消关注的api
 import { unfollowUser } from '../apis/user'
+// 引入点赞的api
+import { likeArticle } from '@/apis/article'
 export default {
   data() {
     return {
@@ -81,18 +83,27 @@ export default {
     filters
   },
   methods: {
-    //  关注
+    //  用户关注
     async followThisUser() {
       let res
-      // 满足下面的条件说明你已经关注过了，这次单击就是取消
       if (this.article.has_follow) {
-        res = await unfollowUser(this.article.user.id)
-      } else { // 还没有关注，此次单击就是关注该用户
-        res = await followUser(this.article.user.id)
+        res = await unfollowUser(this.article.id)
+      } else {
+        res = await followUser(this.article.id);
       }
-      console.log(res)
-      // 刷新
       this.article.has_follow = !this.article.has_follow
+      this.$toast.success(res.data.message)
+    },
+    // 点赞文章
+    async likeThisArticle() {
+      let res = await likeArticle(this.article.id)
+      console.log(res)
+      if (res.data.message === '点赞成功') {
+        ++this.article.like_length;
+      } else {
+        --this.article.like_length
+      }
+      this.article.has_like = !this.article.has_like;
       this.$toast.success(res.data.message)
     }
   }

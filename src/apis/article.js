@@ -16,3 +16,10 @@ export const getArticleById = (id) => {
     url: `/post/${id}`
   })
 }
+
+// 3,点赞的api
+export const likeArticle = (id) => {
+  return axios({
+    url: `/post_like/${id}`
+  })
+}
