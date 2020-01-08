@@ -17,11 +17,21 @@
     <van-tabs v-model="active" sticky swipeable>
       <!-- 单击标签项及内容面板 -->
       <van-tab :title="cate.name" v-for="cate in cateList" :key="cate.id">
-        <van-list v-model="cate.loading" :finished="cate.finished" finished-text="没有更多了" @load="onLoad" :immediate-check='false' :offset="10">
-         <hmarticleBlock v-for="item in cate.postList" :key="item.id" :post="item"></hmarticleBlock>
-         </van-list>
+        <!-- 上拉加载组件 -->
+        <van-list
+          v-model="cate.loading"
+          :finished="cate.finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+          :immediate-check="false"
+          :offset="10"
+        >
+          <!-- 下拉刷新组件 -->
+          <van-pull-refresh v-model="cate.isLoading" @refresh="onRefresh">
+            <hmarticleBlock v-for="item in cate.postList" :key="item.id" :post="item"></hmarticleBlock>
+          </van-pull-refresh>
+        </van-list>
       </van-tab>
-
     </van-tabs>
     <!-- 新闻列表 -->
     <div class="newsList"></div>
@@ -73,20 +83,35 @@ export default {
         pageSize: 5, // 这个栏目每页所显示的记录数
         pageIndex: 1, // 这个栏目 当前的页码
         loading: false, // 这个栏目的加载状态
-        finished: false // 这个栏目的数据是否完全加载完毕（加载完毕显示没有数据了的提示）
+        finished: false, // 这个栏目的数据是否完全加载完毕（加载完毕显示没有数据了的提示）
+        isLoading: false // 下拉刷新，是否处在刷新状态
       };
     });
     // map 向数组中的对象添加新的属性 生成一个新的数组
-    console.log(this.cateList)
+    console.log(this.cateList);
     // 获取数据库数据成功
     this.init();
   },
   methods: {
-    onLoad() {
-      this.cateList[this.active].pageIndex++;
+    //  下拉刷新功能
+    onRefresh() {
+      this.cateList[this.active].pageIndex = 1;
+      this.cateList[this.active].postList.length = 0;
       setTimeout(() => {
-        this.init()
-      }, 2000)
+        this.init();
+      }, 1000)
+      // 将finished重置为false,以便可以继续的上拉加载
+      this.cateList[this.active].finished = false;
+    },
+    // 上拉加载功能
+    onLoad() {
+      // 当当前新闻列表没有在刷新的状态时，可以上拉加载
+      if (this.cateList[this.active].isLoading === false) {
+        this.cateList[this.active].pageIndex++;
+        setTimeout(() => {
+          this.init();
+        }, 1000);
+      }
     },
     async init() {
       let res2 = await getPostList({
@@ -95,19 +120,23 @@ export default {
         pageIndex: this.cateList[this.active].pageIndex,
         category: this.cateList[this.active].id
       });
-      //  响应完更改为false
+      // 下拉刷新
+      if (this.cateList[this.active].isLoading) {
+        this.cateList[this.active].isLoading = false
+      }
+      //  响应完更改为false(上拉加载)
       if (this.cateList[this.active].loading) {
-        this.cateList[this.active].loading = false
+        this.cateList[this.active].loading = false;
       }
       // 如果服务器当也数据长度小于显示的页数，则不再加载数据
       if (res2.data.data.length < this.cateList[this.active].pageSize) {
-        this.cateList[this.active].finished = true
+        this.cateList[this.active].finished = true;
       }
       // console.log(res2)
       // 将数据存储到当前栏目的postList中
       // this.cateList[this.active].postList = res2.data.data;
       // 将拿到的数据存到postList中
-      this.cateList[this.active].postList.push(...res2.data.data)
+      this.cateList[this.active].postList.push(...res2.data.data);
     }
   }
 };
