@@ -1,5 +1,6 @@
 <template>
-  <div class="single">
+  <!-- 加载图片 左右格式的 -->
+  <div class="single" v-if="post.type === 1 && post.cover.length <=2">
     <div class="left">
       <p class="content">{{post.title}}</p>
       <p class="info">
@@ -9,12 +10,39 @@
     </div>
     <img :src="post.cover[0].url" alt />
   </div>
+  <!-- 加载视频数据 -->
+  <div class="singlev" v-else-if="post.type===2">
+    <p class="content">{{post.title}}</p>
+    <div class="playarea">
+      <img :src="post.cover[0].url" alt />
+      <div class="playicon">
+        <van-icon name="play" />
+      </div>
+    </div>
+    <p class="info">
+      <span>{{post.user.nickname}}</span>
+      <span>{{post.comment_length}}跟帖</span>
+    </p>
+  </div>
+  <!-- 加载三张图片的格式 -->
+  <div class="singlet" v-else-if="post.type === 1 && post.cover.length >=3">
+    <p class="content">{{post.title}}</p>
+    <div class="imgs">
+      <!-- <img :src="post.cover[0].url" alt /> -->
+      <img :src="item.url" v-for="item in post.cover" :key="item.id" alt />
+      <!-- <img :src="item.url" alt v-for='item in post.cover' :key='item.id'/> -->
+    </div>
+    <p class="info">
+      <span>{{post.user.nickname}}</span>
+      <span>{{post.comment_length}}跟帖</span>
+    </p>
+  </div>
 </template>
 
 <script>
 export default {
   props: ['post']
-}
+};
 </script>
 
 <style lang='less' scoped>
@@ -35,24 +63,6 @@ body {
     flex-direction: column;
     justify-content: space-around;
     overflow: hidden;
-    .content {
-      font-size: 14px;
-      padding: 0px 5px;
-      line-height: 24px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-  .info {
-    font-size: 12px;
-    padding-left:5px;
-    color: #999;
-    > span:nth-of-type(1) {
-      padding-right: 15px;
-    }
   }
   img {
     width: 120/360 * 100vw;
@@ -79,6 +89,64 @@ body {
       width: 100%;
       height: 100%;
     }
+  }
+}
+.singlev {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0px;
+  border-bottom: 1px solid #ccc;
+  .playarea {
+    position: relative;
+    .playicon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60/360 * 100vw;
+      height: 60/360 * 100vw;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px #fff;
+      color: #fff;
+      text-align: center;
+      line-height: 65/360 * 100vw;
+      font-size: 45px;
+    }
+    > img {
+      width: 100%;
+      margin:  15px ,0;
+    }
+    .content {
+      font-size : 15px;
+     line-height: 18px;
+    }
+  }
+}
+.info {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-top : 6px;
+    color: #999;
+    > span:nth-of-type(1) {
+      padding-right: 15px;
+    }
+  }
+.singlet{
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0px;
+  border-bottom: 1px solid #ccc;
+  > .imgs {
+    display: flex;
+    justify-content: space-around;
+    > img {
+      width: 32.33%;
+    }
+  }
+  .content {
+    font-size : 16px;
+    padding-bottom: 8px;
   }
 }
 </style>

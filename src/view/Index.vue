@@ -73,7 +73,7 @@ export default {
       };
     });
     // map 向数组中的对象添加新的属性 生成一个新的数组
-    // console.log(this.cateList)
+    console.log(this.cateList)
     // 获取数据库数据成功
     this.init();
   },
