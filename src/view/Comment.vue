@@ -38,7 +38,7 @@ export default {
   },
   async mounted () {
     let res = await getCommentList(this.$route.params.id, { pageSize: 40, pageIndex: 1 })
-    console.log(res)
+    // console.log(res)
     this.commentList = res.data.data
     // 补充照片路径
     this.commentList = this.commentList.map(value => {

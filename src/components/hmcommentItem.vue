@@ -2,6 +2,8 @@
 <!-- 封装的评论组件 -->
 <!-- 实现二级评论渲染 -->
   <div class="commentItem">
+      <!-- 组件递归 -->
+      <commentItem v-if='parent.parent' :parent='parent.parent'></commentItem>
       <div class="top">
           <div class="left">
               <span>{{parent.user.nickname}}</span> &nbsp;&nbsp;&nbsp;
@@ -15,7 +17,8 @@
 
 <script>
 export default {
-  props: ['parent']
+  props: ['parent'],
+  name: 'commentItem'
 }
 </script>
 
