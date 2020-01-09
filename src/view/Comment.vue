@@ -15,17 +15,21 @@
         </div>
         <div class="text">{{comment.content}}</div>
       </div>
+      <!-- 引入封装的评论组件（实现二级评论显示） -->
+       <commentItem v-if='comment.parent'  :parent='comment.parent'></commentItem>
     </div>
   </div>
 </template>
 
 <script>
 import myheader from '@/components/hmheader.vue';
+// 引入二级评论封装的组件
+import commentItem from '../components/hmcommentItem'
 // 引入获取评论列表的api
 import { getCommentList } from '../apis/article'
 export default {
   components: {
-    myheader
+    myheader, commentItem
   },
   data () {
     return {
