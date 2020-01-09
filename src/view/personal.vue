@@ -13,7 +13,8 @@
         <span class="iconfont iconjiantou1"></span>
       </div>
     </router-link>
-     <hmcell title='我的关注' desc='关注的用户'></hmcell>
+    <!-- 实现点击跳转我的评论页面 -->
+     <hmcell title='我的关注' desc='关注的用户' @click='$router.push({name: "MyFollows"})'></hmcell>
     <hmcell title='我的跟帖' desc='跟帖/回复'></hmcell>
     <hmcell title='我的收藏' desc='文章/视频'></hmcell>
     <hmcell title='设置'></hmcell>

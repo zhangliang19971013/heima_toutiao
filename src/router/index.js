@@ -15,6 +15,8 @@ import Register from '../view/register'
 import Search from '../view/search'
 // 引入新闻详情页面
 import ArticleDetail from '../view/ArticleDetail'
+// 引入我的关注页面
+import MyFollows from '../view/MyFollows'
 
 Vue.use(VueRouter)
 
@@ -57,6 +59,11 @@ let router = new VueRouter({
       name: 'ArticleDetail',
       path: '/articleDetail/:id',
       component: ArticleDetail
+    },
+    {
+      name: 'MyFollows',
+      path: '/myFollows',
+      component: MyFollows
     }
   ]
 })
