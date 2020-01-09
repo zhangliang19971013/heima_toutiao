@@ -11,14 +11,14 @@
             <p>{{comment.user.nickname}}</p>
             <span>2小时前</span>
           </div>
-          <span>回复</span>
+          <span @click='sendComment(comment)'>回复</span>
         </div>
             <!-- 引入封装的评论组件（实现二级评论显示） -->
        <commentItem v-if='comment.parent'  :parent='comment.parent'></commentItem>
         <div class="text">{{comment.content}}</div>
       </div>
     </div>
-    <CommentFooter :post='article' @refresh='refresh'></CommentFooter>
+    <CommentFooter :post='article' @refresh='refresh' :obj='replyObj' @reset='replyObj=null'></CommentFooter>
   </div>
 </template>
 
@@ -36,7 +36,8 @@ export default {
   data () {
     return {
       commentList: [],
-      article: ''
+      article: '',
+      replyObj: null
     }
   },
   async mounted () {
@@ -64,6 +65,9 @@ export default {
       this.init();
       // 数据重新加载后，会自动跳到顶部
       window.scrollTo(0, 0)
+    },
+    sendComment(comment) {
+      this.replyObj = comment;
     }
   }
 };

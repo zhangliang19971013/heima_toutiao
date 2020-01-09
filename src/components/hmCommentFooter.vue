@@ -15,7 +15,7 @@
         <textarea  ref='commtext' rows="5" @blur='isFocus = false'></textarea>
         <div>
             <span @click='sendComment'>发送</span>
-            <span @click='handlerFocus'>取消</span>
+            <span @click='cancelReply'>取消</span>
         </div>
     </div>
   </div>
@@ -27,10 +27,20 @@ import { starArticle } from '@/apis/article.js'
 // 引入发表评论的api
 import { replyComment } from '../apis/article'
 export default {
-  props: ['post'],
+  props: ['post', 'obj'],
   data () {
     return {
       isFocus: false
+    }
+  },
+  // 监听传过来的obj有变化就可以触发
+  watch: {
+    obj() {
+      if (this.obj) {
+        // console.log(123)
+        // 监听obj变化 触发弹框
+        this.isFocus = true
+      }
     }
   },
   methods: {
@@ -39,6 +49,7 @@ export default {
       this.isFocus = !this.isFocus
       this.$refs.commtext.focus()
     },
+    // 收藏文章
     async starThisArticle() {
       let res = await starArticle(this.post.id)
       //   console.log(res)
@@ -50,6 +61,10 @@ export default {
       let data = {
         content: this.$refs.commtext.value
       }
+      // 回复评论 （data.parent_id）为回复id
+      if (this.obj) {
+        data.parent_id = this.obj.id
+      }
       let res = await replyComment(this.post.id, data)
       console.log(res)
       if (res.data.message === '评论发布成功') {
@@ -60,6 +75,11 @@ export default {
         // 让评论列表数据刷新--让父组件进行数据的刷新
         this.$emit('refresh')
       }
+    },
+    // 取消评论
+    cancelReply() {
+      this.isFocus = false
+      this.$emit('reset')
     }
   }
 }
