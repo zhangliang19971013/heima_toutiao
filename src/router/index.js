@@ -17,6 +17,8 @@ import Search from '../view/search'
 import ArticleDetail from '../view/ArticleDetail'
 // 引入我的关注页面
 import MyFollows from '../view/MyFollows'
+// 引入收藏文章列表
+import MyStars from '../view/MyStars'
 
 Vue.use(VueRouter)
 
@@ -64,6 +66,11 @@ let router = new VueRouter({
       name: 'MyFollows',
       path: '/myFollows',
       component: MyFollows
+    },
+    {
+      name: 'MyStars',
+      path: '/myStars',
+      component: MyStars
     }
   ]
 })
