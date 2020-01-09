@@ -38,8 +38,9 @@
       <h2>精彩跟帖</h2>
       <div class="item">
         <div class="head">
-          <img src="http://127.0.0.1:3000/uploads/image/default.png" alt />
+          <!-- <img :src="article.cover[0].url" alt /> -->
           <div>
+            <!-- <p>{{article.categories[0].name}}</p> -->
             <p>火星网友</p>
             <span>2小时前</span>
           </div>
@@ -49,6 +50,8 @@
       </div>
       <div class="more">更多跟帖</div>
     </div>
+    <!-- 底部评论块 -->
+    <hmCommentFooter :post='article'></hmCommentFooter>
   </div>
 </template>
 
@@ -63,7 +66,12 @@ import { followUser } from '@/apis/user'
 import { unfollowUser } from '../apis/user'
 // 引入点赞的api
 import { likeArticle } from '@/apis/article'
+// 引入评论块
+import hmCommentFooter from '@/components/hmCommentFooter'
 export default {
+  components: {
+    hmCommentFooter
+  },
   data() {
     return {
       article: {
@@ -249,4 +257,12 @@ export default {
     font-size: 13px;
   }
 }
+// .keeps {
+//   border-top: 5px solid #ddd;
+//   padding: 0 15px 50px;
+//   > h2 {
+//     line-height: 50px;
+//     text-align: center;
+//   }
+// }
 </style>
