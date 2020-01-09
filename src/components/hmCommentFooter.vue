@@ -1,5 +1,6 @@
 <template>
   <div class="commentFooter">
+    <!-- 底部评论框显示 -->
     <div class="addcomment" v-show='!isFocus'>
       <input type="text" placeholder="写跟帖"  @focus="handlerFocus"/>
       <span class="comment" @click="$router.push({path: `/comment/${post.id}`})">
@@ -9,11 +10,12 @@
       <i class="iconfont iconshoucang" @click='starThisArticle' :class="{active:post.has_star}"></i>
       <i class="iconfont iconfenxiang"></i>
     </div>
+    <!-- 文本域结构显示 -->
     <div class="inputcomment" v-show='isFocus'>
         <textarea  ref='commtext' rows="5" @blur='isFocus = false'></textarea>
         <div>
-            <span>发送</span>
-            <span>取消</span>
+            <span @click='sendComment'>发送</span>
+            <span @click='handlerFocus'>取消</span>
         </div>
     </div>
   </div>
@@ -22,6 +24,8 @@
 <script>
 // 引入文章收藏的api
 import { starArticle } from '@/apis/article.js'
+// 引入发表评论的api
+import { replyComment } from '../apis/article'
 export default {
   props: ['post'],
   data () {
@@ -40,6 +44,22 @@ export default {
       //   console.log(res)
       this.post.has_star = !this.post.has_star
       this.$toast.success(res.data.message)
+    },
+    // 发布评论
+    async sendComment() {
+      let data = {
+        content: this.$refs.commtext.value
+      }
+      let res = await replyComment(this.post.id, data)
+      console.log(res)
+      if (res.data.message === '评论发布成功') {
+        this.$toast.success(res.data.message)
+        // 让输入框消失
+        this.isFocus = false;
+        this.$refs.commtext.value = ''
+        // 让评论列表数据刷新--让父组件进行数据的刷新
+        this.$emit('refresh')
+      }
     }
   }
 }
