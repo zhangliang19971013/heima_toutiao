@@ -19,6 +19,8 @@ import ArticleDetail from '../view/ArticleDetail'
 import MyFollows from '../view/MyFollows'
 // 引入收藏文章列表
 import MyStars from '../view/MyStars'
+// 引入精彩评论页面
+import Comment from '../view/Comment'
 
 Vue.use(VueRouter)
 
@@ -71,6 +73,11 @@ let router = new VueRouter({
       name: 'MyStars',
       path: '/myStars',
       component: MyStars
+    },
+    {
+      name: 'Comment',
+      path: '/comment/:id',
+      component: Comment
     }
   ]
 })

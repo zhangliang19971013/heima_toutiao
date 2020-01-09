@@ -37,3 +37,11 @@ export const starList = () => {
     url: '/user_star'
   })
 }
+
+// 6,获取文章评论列表
+export const getCommentList = (id, params) => {
+  return axios({
+    url: `/post_comment/${id}`,
+    params
+  })
+}

@@ -51,7 +51,7 @@ export default {
     if (res.data.message === '获取成功') {
       this.userDate = res.data.data
       this.userDate.head_img = 'http://127.0.0.1:3000' + this.userDate.head_img;
-      console.log(this.userDate)
+      // console.log(this.userDate)
     }
   },
   methods: {

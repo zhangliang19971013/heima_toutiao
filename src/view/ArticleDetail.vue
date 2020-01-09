@@ -84,7 +84,7 @@ export default {
     let res = await getArticleById(this.$route.params.id);
     // console.log(res)
     this.article = res.data.data;
-    console.log(this.article);
+    // console.log(this.article);
   },
   //   过滤器
   filters: {
