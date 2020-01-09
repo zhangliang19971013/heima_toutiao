@@ -51,9 +51,9 @@ export const unfollowUser = (id) => {
   })
 }
 
-// 7，用户关注列表
-export const followList = (id) => {
+// 7,用户关注列表
+export const getUserFollows = () => {
   return axios({
-    url: `/post_comment/${id}`
+    url: '/user_follows'
   })
 }
