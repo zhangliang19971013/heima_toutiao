@@ -54,3 +54,11 @@ export const replyComment = (id, data) => {
     data
   })
 }
+
+// 8,实现文章的搜索功能
+export const searchArticle = (params) => {
+  return axios({
+    url: '/post_search',
+    params
+  })
+}
