@@ -11,61 +11,66 @@
             <p>{{comment.user.nickname}}</p>
             <span>2小时前</span>
           </div>
-          <span @click='sendComment(comment)'>回复</span>
+          <span @click="sendComment(comment)">回复</span>
         </div>
-            <!-- 引入封装的评论组件（实现二级评论显示） -->
-       <commentItem v-if='comment.parent'  :parent='comment.parent'></commentItem>
+        <!-- 引入封装的评论组件（实现二级评论显示） -->
+        <commentItem v-if="comment.parent" :parent="comment.parent" @replyComment='sendComment'></commentItem>
         <div class="text">{{comment.content}}</div>
       </div>
     </div>
-    <CommentFooter :post='article' @refresh='refresh' :obj='replyObj' @reset='replyObj=null'></CommentFooter>
+    <CommentFooter :post="article" @refresh="refresh" :obj="replyObj" @reset="replyObj=null"></CommentFooter>
   </div>
 </template>
 
 <script>
 import myheader from '@/components/hmheader.vue';
 // 引入二级评论封装的组件
-import commentItem from '../components/hmcommentItem'
+import commentItem from '../components/hmcommentItem';
 // 引入获取评论列表的api
-import CommentFooter from '../components/hmCommentFooter'
-import { getCommentList, getArticleById } from '../apis/article'
+import CommentFooter from '../components/hmCommentFooter';
+import { getCommentList, getArticleById } from '../apis/article';
 export default {
   components: {
-    myheader, commentItem, CommentFooter
+    myheader,
+    commentItem,
+    CommentFooter
   },
-  data () {
+  data() {
     return {
       commentList: [],
       article: '',
       replyObj: null
-    }
+    };
   },
-  async mounted () {
+  async mounted() {
     // 获取评论数据
     this.init();
-
     // 获取文章详情
-    let res2 = await getArticleById(this.$route.params.id)
+    let res2 = await getArticleById(this.$route.params.id);
     // console.log(res2)
-    this.article = res2.data.data
+    this.article = res2.data.data;
   },
   methods: {
     async init() {
-      let res = await getCommentList(this.$route.params.id, { pageSize: 40, pageIndex: 1 })
-      console.log(res)
-      this.commentList = res.data.data.length ? res.data.data : this.commentList
+      let res = await getCommentList(this.$route.params.id, {
+        pageSize: 40,
+        pageIndex: 1
+      });
+      // console.log(res);
+      this.commentList = res.data.data.length ? res.data.data : this.commentList;
       // 补充照片路径
       this.commentList = this.commentList.map(value => {
-        value.user.head_img = 'http://127.0.0.1:3000' + value.user.head_img
-        return value
-      })
+        value.user.head_img = 'http://127.0.0.1:3000' + value.user.head_img;
+        return value;
+      });
     },
-    // 发表评论（实现数据刷新功能，和列表的置顶）
+    // 发表评论后（实现数据刷新功能，和列表的置顶）
     refresh() {
       this.init();
       // 数据重新加载后，会自动跳到顶部
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     },
+    // 点击回复触发事件
     sendComment(comment) {
       this.replyObj = comment;
     }
@@ -74,6 +79,11 @@ export default {
 </script>
 
 <style lang='less' scoped>
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
 .comments {
   padding-bottom: 50px;
 }
