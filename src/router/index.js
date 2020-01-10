@@ -21,6 +21,8 @@ import MyFollows from '../view/MyFollows'
 import MyStars from '../view/MyStars'
 // 引入精彩评论页面
 import Comment from '../view/Comment'
+// 引入增加组件页面
+import CateManager from '../view/CateManager'
 
 Vue.use(VueRouter)
 
@@ -78,6 +80,11 @@ let router = new VueRouter({
       name: 'Comment',
       path: '/comment/:id',
       component: Comment
+    },
+    {
+      name: 'CateManager',
+      path: '/cateManager',
+      component: CateManager
     }
   ]
 })

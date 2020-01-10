@@ -28,7 +28,12 @@
         >
           <!-- 下拉刷新组件 -->
           <van-pull-refresh v-model="cate.isLoading" @refresh="onRefresh">
-            <hmarticleBlock v-for="item in cate.postList" :key="item.id" :post="item" @click='$router.push({path : `/articleDetail/${item.id}`})'></hmarticleBlock>
+            <hmarticleBlock
+              v-for="item in cate.postList"
+              :key="item.id"
+              :post="item"
+              @click="$router.push({path : `/articleDetail/${item.id}`})"
+            ></hmarticleBlock>
           </van-pull-refresh>
         </van-list>
       </van-tab>
@@ -69,13 +74,36 @@ export default {
   },
   //  引入调用
   async mounted() {
+    // 实现加号的注册事件 实现点击跳转页面
+    document.querySelector('.van-sticky').onclick = e => {
+      // console.log(123)
+      if (e.target.className === 'van-sticky') {
+        this.$router.push({ name: 'CateManager' })
+      }
+    }
+    // 获取id
     this.id = JSON.parse(
       localStorage.getItem('toutiao_41_userInfo') || '{}'
     ).id;
-    let res = await getCateList();
-    // console.log(res)
-    this.cateList = res.data.data;
-    // console.log(this.cateList)
+    //  如果本地存储有数据就用本地存储的
+    // 手动将关注和头条加上
+    if (localStorage.getItem('toutiao_41_cate_data')) {
+      this.cateList = JSON.parse(localStorage.getItem('toutiao_41_cate_data'));
+      if (localStorage.getItem('toutiao_41_token')) {
+        this.cateList.unshift(
+          ...[
+            { id: 1, name: '关注', is_top: 1 },
+            { id: 999, name: '头条', is_top: 1 }
+          ]
+        );
+      } else {
+        this.cateList.unshift({ id: 999, name: '头条', is_top: 1 })
+      }
+    } else {
+      let res = await getCateList();
+      this.cateList = res.data.data;
+    }
+
     // map原生方法实现数据改造
     this.cateList = this.cateList.map(value => {
       return {
@@ -100,7 +128,7 @@ export default {
       this.cateList[this.active].postList.length = 0;
       setTimeout(() => {
         this.init();
-      }, 1000)
+      }, 1000);
       // 将finished重置为false,以便可以继续的上拉加载
       this.cateList[this.active].finished = false;
     },
@@ -123,7 +151,7 @@ export default {
       });
       // 下拉刷新
       if (this.cateList[this.active].isLoading) {
-        this.cateList[this.active].isLoading = false
+        this.cateList[this.active].isLoading = false;
       }
       //  响应完更改为false(上拉加载)
       if (this.cateList[this.active].loading) {
@@ -153,6 +181,9 @@ export default {
   background-color: red;
   font-size: 25px;
   color: #fff;
+  > span {
+    font-size: 30px;
+  }
   .search {
     flex: 1;
     height: 40px;
@@ -170,6 +201,21 @@ export default {
     .iconnew {
       font-size: 60px;
     }
+  }
+}
+/deep/.van-sticky {
+  padding-right: 50px;
+  &::after {
+    content: "+";
+    position: absolute;
+    width: 51px;
+    height: 44px;
+    background-color: #fff;
+    top: 0;
+    right: 0;
+    text-align: center;
+    line-height: 42px;
+    font-size: 35px;
   }
 }
 </style>

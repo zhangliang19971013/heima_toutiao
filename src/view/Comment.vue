@@ -17,8 +17,8 @@
         <commentItem v-if="comment.parent" :parent="comment.parent" @replyComment='sendComment'></commentItem>
         <div class="text">{{comment.content}}</div>
       </div>
-    </div>
     <CommentFooter :post="article" @refresh="refresh" :obj="replyObj" @reset="replyObj=null"></CommentFooter>
+    </div>
   </div>
 </template>
 
